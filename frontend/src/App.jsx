@@ -1,16 +1,12 @@
-
 import React from 'react';
-import { useEffect } from 'react';
-import Context from './context/Context';
 import LandingPage from './pages/landingPage/LandingPage';
+import { Outlet } from 'react-router-dom';
 
 function App() {
 
   return (
     <>
-      <Context>
-        <LandingPage />
-      </Context>
+      <Outlet/>
     </>
   )
 }

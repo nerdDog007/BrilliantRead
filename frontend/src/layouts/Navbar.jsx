@@ -5,7 +5,7 @@ import Hero from '../components/hero'
 
 function Navbar() {
   return (
-    <nav className='py-4 w-[50vw] bg-white mx-auto flex justify-between items-center'>
+    <nav className='py-4  mx-auto w-screen md:w-[80vw] lg:w-[60vw]'>
       <img src={Logo} alt="" />
     </nav>
   )

@@ -1,53 +1,32 @@
-const fetch = require('node-fetch'); // if you don't have fetch natively (Node <18)
-const fs = require('fs')
-// // // 7049
-const url = "https://openlibrary.org/search.json?q=the&page=6";
+import express from 'express'
+import dotenv from 'dotenv'
+import mongoose from 'mongoose'
 
-const controller = new AbortController();
-const timeout = 150000; // 15 seconds timeout
+dotenv.config()
 
-// Set a timer that aborts the request after 15 seconds
-const timeoutId = setTimeout(() => {
-  controller.abort();
-}, timeout);
+import cors from  'cors'
+const app = express();
 
-fetch(url, { signal: controller.signal })
-  .then(response => {
-    clearTimeout(timeoutId); // clear timeout if request completes in time
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
-    return response.json();
-  })
-  .then(data => {
-    const dataDocs = data.docs
-    fs.readFile('./db/book.json','utf-8',(err,da)=>{
-        if(da)
-        {
-        da = JSON.parse(da)
-        const concat = da.concat(dataDocs)
-        const concatF = JSON.stringify(concat,null,2)
-        fs.writeFile('./db/book.json',concatF,(err,da)=>{
-        console.log(da)
-        })
-        }
-        else 
-        {
-            console.log("this")
-            const form = JSON.stringify(dataDocs,null,2)
-            fs.writeFile('./db/book.json',form,(er,da)=>{
-                console.log(da)
-            })
-        }
+// Enable CORS
+app.use(cors());
+app.use(express.json())
+const port = process.env.PORT || 3000
+const uri = process.env.MONGO_DB_URL
 
-    })
-  })
-  .catch(error => {
-    if (error.name === 'AbortError') {
-      console.error('Fetch aborted due to timeout');
-    } else {
-      console.error('Fetch error:', error);
-    }
+app.get('/', (req, res) => {
+  res.send('Hello World!')
+  console.log(port);
+  
+})
+app.post("/signUp", (req, res) => {
+  console.log(req.body);
+  res.send("SignUp Successful");
 })
 
 
+app.listen(port, () => {
+  console.log(`Server is running on port ${port}`)
+})
+
+
+console.log("this")
